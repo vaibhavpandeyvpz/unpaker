@@ -1,17 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <RootNamespace>Unpaker</RootNamespace>
+    
+    <!-- NuGet Package Metadata -->
+    <PackageId>Unpaker</PackageId>
+    <Authors>Vaibhav Pandey</Authors>
+    <Description>A comprehensive C# library for reading and writing Unreal Engine 4 Pak archive files, compatible with GTA:III, GTA:VC, and GTA:SA Definitive Editions.</Description>
+    <PackageTags>unreal-engine;pak;gta;gtasa;gtavc;gta-iii;gta-definitive-edition;archive;modding</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/vaibhavpandeyvpz/unpaker</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/vaibhavpandeyvpz/unpaker</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Ionic.Zlib.Core" Version="1.0.0" />
     <PackageReference Include="K4os.Compression.LZ4" Version="1.3.8" />
     <PackageReference Include="ZstdSharp.Port" Version="0.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

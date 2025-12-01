@@ -13,6 +13,7 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+publish/
 x64/
 x86/
 [Ww][Ii][Nn]32/
@@ -42,6 +43,7 @@ bld/
 # NuGet Packages
 *.nupkg
 *.snupkg
+nupkg/
 **/packages/*
 !**/packages/build/
 *.nuget.props

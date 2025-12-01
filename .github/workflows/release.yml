@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          $version = $tag -replace '^v', ''
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Pack NuGet package
+        run: dotnet pack Unpaker/Unpaker.csproj --configuration Release --output ./nupkg -p:PackageVersion=${{ steps.version.outputs.VERSION }}
+
+      - name: Publish to NuGet
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Build CLI
+        run: dotnet publish Unpaker.CLI/Unpaker.CLI.csproj --configuration Release --output ./publish/cli
+
+      - name: Build Desktop App
+        run: dotnet publish Unpaker.Desktop/Unpaker.Desktop.csproj --configuration Release --output ./publish/desktop
+
+      - name: Package CLI
+        run: Compress-Archive -Path ./publish/cli/* -DestinationPath ./Unpaker.CLI-${{ github.event.release.tag_name }}.zip
+
+      - name: Package Desktop App
+        run: Compress-Archive -Path ./publish/desktop/* -DestinationPath ./Unpaker.Desktop-${{ github.event.release.tag_name }}.zip
+
+      - name: Upload NuGet Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unpaker-${{ steps.version.outputs.VERSION }}.nupkg
+          path: ./nupkg/*.nupkg
+
+      - name: Upload CLI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unpaker.CLI-${{ github.event.release.tag_name }}
+          path: ./Unpaker.CLI-${{ github.event.release.tag_name }}.zip
+
+      - name: Upload Desktop Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unpaker.Desktop-${{ github.event.release.tag_name }}
+          path: ./Unpaker.Desktop-${{ github.event.release.tag_name }}.zip
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./Unpaker.CLI-${{ github.event.release.tag_name }}.zip
+            ./Unpaker.Desktop-${{ github.event.release.tag_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
