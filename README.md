@@ -1,5 +1,11 @@
 # Unpaker
 
+[![CI](https://github.com/vaibhavpandeyvpz/unpaker/actions/workflows/ci.yml/badge.svg)](https://github.com/vaibhavpandeyvpz/unpaker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NuGet](https://img.shields.io/nuget/v/Unpaker.svg)](https://www.nuget.org/packages/Unpaker)
+[![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%20%7C%209.0-blue.svg)](https://dotnet.microsoft.com/)
+[![GitHub release](https://img.shields.io/github/release/vaibhavpandeyvpz/unpaker.svg)](https://github.com/vaibhavpandeyvpz/unpaker/releases)
+
 A comprehensive C# library and desktop application for reading and writing Unreal Engine 4 Pak archive files, compatible with GTA:III, GTA:VC, and GTA:SA Definitive Editions.
 
 ![Screenshot](assets/screenshot.png)
